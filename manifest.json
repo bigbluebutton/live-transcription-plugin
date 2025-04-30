@@ -1,0 +1,6 @@
+{
+  "requiredSdkVersion": "~0.0.73",
+  "name": "<plugin-name>",
+  "javascriptEntrypointUrl": "<plugin-name>.js",
+  "localesBaseUrl": "https://cdn.dominio.com/pluginabc/"
+}
