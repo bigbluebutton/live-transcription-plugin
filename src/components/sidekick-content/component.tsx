@@ -12,6 +12,14 @@ const intlMessages = defineMessages({
     id: 'sidekick.panel.downloadButton.label',
     description: 'Label for the download button',
   },
+  scrollButtonLabel: {
+    id: 'sidekick.panel.scrollButton.label',
+    description: 'Label for the "Scroll to latest" button',
+  },
+  avatarAlternativeText: {
+    id: 'sidekick.panel.avatar.alternativeText',
+    description: 'Alternative text for avatar image',
+  },
 });
 
 export function LiveTranscriptionSidekickContent(
@@ -93,7 +101,12 @@ export function LiveTranscriptionSidekickContent(
                 <Styled.UserInfo>
                   {c.user.avatar && c.user.avatar !== '' ? (
                     <Styled.UserAvatarImage
-                      alt="Avatar for user"
+                      alt={intl.formatMessage(
+                        intlMessages.avatarAlternativeText,
+                        {
+                          0: c.user.name,
+                        },
+                      )}
                       src={c.user.avatar}
                     />
                   ) : (
@@ -119,7 +132,7 @@ export function LiveTranscriptionSidekickContent(
 
       {!isAtBottom && (
         <Styled.ScrollButton type="button" onClick={scrollToBottom}>
-          Scroll to latest
+          {intl.formatMessage(intlMessages.scrollButtonLabel)}
         </Styled.ScrollButton>
       )}
     </Styled.Container>
