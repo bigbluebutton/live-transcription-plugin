@@ -2,12 +2,20 @@ import {
   ReactNode, useEffect, useRef, useState,
 } from 'react';
 import * as React from 'react';
+import { defineMessages } from 'react-intl';
 import * as Styled from './styles';
 import { CaptionGraphqlResult, LiveTranscriptionSidekickContentProps } from './types';
 import { GET_CAPTIONS } from './queries';
 
+const intlMessages = defineMessages({
+  downloadButtonLabel: {
+    id: 'sidekick.panel.downloadButton.label',
+    description: 'Label for the download button',
+  },
+});
+
 export function LiveTranscriptionSidekickContent(
-  { pluginApi, captionLocale: locale }: LiveTranscriptionSidekickContentProps,
+  { pluginApi, captionLocale: locale, intl }: LiveTranscriptionSidekickContentProps,
 ): ReactNode {
   const { data: captions } = pluginApi.useCustomSubscription
     ? pluginApi.useCustomSubscription<CaptionGraphqlResult>(GET_CAPTIONS, {
@@ -71,7 +79,7 @@ export function LiveTranscriptionSidekickContent(
       <Styled.Header>
         <Styled.HeaderTitle>{locale}</Styled.HeaderTitle>
         <Styled.DownloadButton type="button" onClick={downloadLiveTranscription}>
-          Download
+          {intl.formatMessage(intlMessages.downloadButtonLabel)}
         </Styled.DownloadButton>
       </Styled.Header>
       <Styled.ScrollAreaWrapper>
