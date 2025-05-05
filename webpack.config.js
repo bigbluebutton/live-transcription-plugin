@@ -17,6 +17,11 @@ module.exports = {
     host: '0.0.0.0',
     hot: false,
     liveReload: false,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+      'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization, ngrok-skip-browser-warning',
+    },
     client: {
       overlay: false,
     },
