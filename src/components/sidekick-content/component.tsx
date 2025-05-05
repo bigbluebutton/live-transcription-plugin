@@ -50,14 +50,14 @@ export function LiveTranscriptionSidekickContent(
   };
 
   const downloadLiveTranscription = () => {
-    if (!captions?.caption_persistent) return;
+    if (!captions?.caption_history) return;
 
     const formatDate = (isoDate: string) => {
       const date = new Date(isoDate);
       return date;
     };
 
-    const textContent = captions.caption_persistent.map((c) => {
+    const textContent = captions.caption_history.map((c) => {
       const timestamp = formatDate(c.createdAt);
       return `${c.user.name} (${timestamp}): ${c.captionText}`;
     }).join('\n');
@@ -73,7 +73,7 @@ export function LiveTranscriptionSidekickContent(
     URL.revokeObjectURL(url);
   };
 
-  const captionsLength = captions?.caption_persistent ? captions?.caption_persistent.length : 0;
+  const captionsLength = captions?.caption_history ? captions?.caption_history.length : 0;
   return (
     <Styled.Container>
       <Styled.Header>
@@ -84,7 +84,7 @@ export function LiveTranscriptionSidekickContent(
       </Styled.Header>
       <Styled.ScrollAreaWrapper>
         <Styled.ScrollArea ref={containerRef} onScroll={handleScroll}>
-          {captions?.caption_persistent?.map((c, index) => (
+          {captions?.caption_history?.map((c, index) => (
             <Styled.CaptionRow
               hasMarginBottom={index !== captionsLength - 1}
               key={c.captionId}

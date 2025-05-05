@@ -8,7 +8,7 @@ export interface LiveTranscriptionSidekickContentProps {
 }
 
 export interface CaptionGraphqlResult {
-  caption_persistent: {
+  caption_history: {
     user: {
       avatar: string;
       color: string;
