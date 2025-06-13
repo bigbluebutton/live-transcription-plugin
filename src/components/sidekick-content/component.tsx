@@ -11,14 +11,17 @@ const intlMessages = defineMessages({
   downloadButtonLabel: {
     id: 'sidekick.panel.downloadButton.label',
     description: 'Label for the download button',
+    defaultMessage: 'Download',
   },
   scrollButtonLabel: {
     id: 'sidekick.panel.scrollButton.label',
     description: 'Label for the "Scroll to latest" button',
+    defaultMessage: 'Scroll to latest',
   },
   avatarAlternativeText: {
     id: 'sidekick.panel.avatar.alternativeText',
     description: 'Alternative text for avatar image',
+    defaultMessage: 'Avatar for user {0}',
   },
 });
 

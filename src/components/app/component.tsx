@@ -11,10 +11,12 @@ const intlMessages = defineMessages({
   sidekickSectionName: {
     id: 'sidekick.section.name',
     description: 'Name of the sidekick panel section',
+    defaultMessage: 'Captions',
   },
   sidekickMenuTitle: {
     id: 'sidekick.panel.title',
     description: 'Title of the sidekick panel foreach live-transcription menu ',
+    defaultMessage: 'Live Transcription ({0})',
   },
 });
 
