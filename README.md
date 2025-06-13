@@ -9,7 +9,7 @@ A brief description of the plugin including a screenshot and/or a short video.
 To build the plugin for production use, follow these steps:
 
 ```bash
-cd $HOME/src/plugin-template
+cd $HOME/src/plugin-live-transcription
 npm ci
 npm run build-bundle
 ```
