@@ -8,5 +8,5 @@ override_dh_auto_build:
 	npm run build-bundle
 
 override_dh_auto_install:
-	install -d debian/bbb-plugin-template/var/www/bigbluebutton-default/assets/plugins/bbb-plugin-template
-	cp -r dist/* debian/bbb-plugin-template/var/www/bigbluebutton-default/assets/plugins/bbb-plugin-template
+	install -d debian/bbb-plugin-live-transcription/var/www/bigbluebutton-default/assets/plugins/bbb-plugin-live-transcription
+	cp -r dist/* debian/bbb-plugin-live-transcription/var/www/bigbluebutton-default/assets/plugins/bbb-plugin-live-transcription
