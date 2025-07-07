@@ -7,3 +7,13 @@ export interface CaptionActiveLocaleGraphqlResponse {
     locale: string;
   }[];
 }
+
+export interface CaptionSettingsGraphqlResponse {
+  meeting: {
+    disabledFeatures: string[];
+    captionSettings: {
+      audioCaptionEnabled: boolean;
+      audioCaptionAvailableLanguages: string[];
+    }
+  }[]
+}
