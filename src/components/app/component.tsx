@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { createIntl, createIntlCache, defineMessages } from 'react-intl';
-import { BbbPluginSdk, GenericContentSidekickArea } from 'bigbluebutton-html-plugin-sdk';
-import { GET_CAPTION_ACTIVE_LOCALES } from './queries';
-import { CaptionActiveLocaleGraphqlResponse, LiveTranscriptionPluginProps } from './types';
+import { BbbPluginSdk, GenericContentSidekickArea, pluginLogger } from 'bigbluebutton-html-plugin-sdk';
+import { GET_CAPTION_ACTIVE_LOCALES, GET_CAPTION_SETTINGS } from './queries';
+import { CaptionActiveLocaleGraphqlResponse, CaptionSettingsGraphqlResponse, LiveTranscriptionPluginProps } from './types';
 import { LiveTranscriptionSidekickContent } from '../sidekick-content/component';
 
 const intlMessages = defineMessages({
@@ -19,6 +19,8 @@ const intlMessages = defineMessages({
     defaultMessage: 'Live Transcription ({0})',
   },
 });
+
+const LIVE_TRANSCRIPTION_DISABLED_FEATURE = 'liveTranscription';
 
 const LOCALE_REQUEST_OBJECT = (!process.env.NODE_ENV || process.env.NODE_ENV === 'development')
   ? {
@@ -46,13 +48,20 @@ export function LiveTranscriptionPlugin(
     fallbackOnEmptyString: true,
   }, cache) : null;
 
+  const [permissionToLoad, setPermissionToLoad] = useState(true);
+
   const { data: captionActiveLocalesResult } = pluginApi.useCustomSubscription<
   CaptionActiveLocaleGraphqlResponse>(
     GET_CAPTION_ACTIVE_LOCALES,
   );
 
+  const { data: captionSettings } = pluginApi.useCustomSubscription<
+  CaptionSettingsGraphqlResponse>(
+    GET_CAPTION_SETTINGS,
+  );
+
   useEffect(() => {
-    if (captionActiveLocalesResult && intl) {
+    if (captionActiveLocalesResult && intl && permissionToLoad) {
       const sidekickPanelsList = captionActiveLocalesResult.caption_activeLocales.map(
         (activeCaptionLocale) => new GenericContentSidekickArea({
           name: intl.formatMessage(intlMessages.sidekickMenuTitle, {
@@ -76,7 +85,29 @@ export function LiveTranscriptionPlugin(
       );
       pluginApi.setGenericContentItems([...sidekickPanelsList]);
     }
-  }, [captionActiveLocalesResult, intl]);
+  }, [captionActiveLocalesResult, intl, permissionToLoad]);
+
+  useEffect(() => {
+    if (captionSettings && captionSettings.meeting.length >= 0) {
+      const liveTranscriptionDisabled = captionSettings.meeting[0].disabledFeatures.includes(
+        LIVE_TRANSCRIPTION_DISABLED_FEATURE,
+      );
+      const captionEnabled = captionSettings.meeting[0].captionSettings.audioCaptionEnabled
+        && captionSettings.meeting[0].captionSettings.audioCaptionAvailableLanguages.length >= 0;
+
+      if (!captionEnabled || liveTranscriptionDisabled) setPermissionToLoad(false);
+
+      const errorMessage = 'Plugin live-transcription will not work';
+      if (liveTranscriptionDisabled) {
+        pluginLogger.warn(`${errorMessage} because disabled-features contains liveTranscription`);
+      }
+      if (!captionEnabled) {
+        pluginLogger.warn(
+          `${errorMessage} because settings audioCaptions is not enabled or doesn't contain a list of available caption language`,
+        );
+      }
+    }
+  }, [captionSettings]);
 
   return null;
 }

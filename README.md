@@ -23,6 +23,33 @@ For more information about the plugin API features, see the documentation (`read
 
 If you have any suggestions, requirements, or questions, don’t hesitate to contact us.
 
+## Extra Settings:
+
+The audio captions must be enabled, to do that, open `/etc/bigbluebutton/bbb-html5.yml` and add the yaml directive `public.app.audioCaptions.enabled=true`, just like the following:
+
+```yml
+public:
+  app:
+    # You may have other setting items here
+    audioCaptions:
+      enabled: true
+```
+
+also, ensure the captions needed are uncommented in the list `public.app.audioCaptions.language.available`, as the following example for en-US:
+```yml
+public:
+  app:
+    audioCaptions:
+      language:
+        # the uncommented languages will be loaded as captions 
+        available:
+        # - de-DE
+          - en-US
+        # - fr-FR
+```
+
+Lastly, make sure that `liveTranscription` is not on the `disabledFeatures` list of your meetings/server (For that, you can check `/etc/bigbluebutton/bbb-web.properties` or the custom parameters sent to the `/create` endpoint of your meeting).
+
 ## Building the Plugin
 
 To build the plugin for production use, follow these steps:
